@@ -1,5 +1,7 @@
 import Dice
 import sys
+import xml.etree.cElementTree as ET
+from pathlib import Path
 
 #----------- Functions
 def roll():
@@ -33,15 +35,44 @@ def dice():
 def exit():
     print ("Execution finished, press any key to exit.")
     sys.exit()
+
+
+def setup():
+
+    my_file = Path("C:\\Users\\matt-dev\\Documents\\GitHub\\Misc\\Python\\data.xml")
+
+    if my_file.is_file():
+        return
+        #file exists
+    else:
+        root = ET.Element("root")
+        tree = ET.ElementTree(root)
+
+        myself = ET.SubElement(root, "myself")
+        users = ET.SubElement(root, "users")
+
+        ET.SubElement(myself, "myname", name="AIv1").text = "AIv1"
+
+        tree.write("data.xml")
+
+
+def getData(element, entity):
+
+    tree = ET.parse("data.xml")
+    root = tree.getroot()
+    val = tree.find(entity + "/" + element)
+    return val.text
+
 #---------------------
 
 #---------- Instance variable declarations
 name = ""
 command = ""
-myname = "AIv1"
 #-----------------------------------------
 
 #---------- main loop
+
+setup()
 
 print("Welcome.")
 name = input("What is your name?")
@@ -54,7 +85,7 @@ if name == "anonymous":
 else:
     print("Hello " + name)
 
-print("My name is " + myname + ".")
+print("My name is " + getData("myname", "myself") + ".")
 
 while command != "exit":
 
