@@ -4,42 +4,33 @@ import xml.etree.cElementTree as ET
 from pathlib import Path
 
 #----------- Functions
-def roll():
-    dieToRoll = input("OK, what kind?")
-    result = Dice.rolldie(dieToRoll)
+def pokerdice():
 
-    if result == "Unrecognized type":
-        print("Sorry that's not a die I know.")
-    else:
-        print("You rolled a " + str(result) + " on your " + dieToRoll.upper())
+    input("OK, you roll your dice first. Press any key to roll.")
+    roll1 = Dice.rolldie("d6")
+    roll2 = Dice.rolldie("d6")
+    roll3 = Dice.rolldie("d6")
+    roll4 = Dice.rolldie("d6")
+    roll5 = Dice.rolldie("d6")
+    print("You rolled " + str(roll1) + " , " + str(roll2) + " , " + str(roll3) + " , " + str(roll4) + " , " + str(roll5) + ".")
 
-def dice():
+    roll6 = Dice.rolldie("D6")
+    roll7 = Dice.rolldie("D6")
+    roll8 = Dice.rolldie("D6")
+    roll9 = Dice.rolldie("D6")
+    roll10 = Dice.rolldie("D6")
+    print("I rolled " + str(roll6) + " , " + str(roll7) + " , " + str(roll8) + " , " + str(roll9) + " , " + str(roll10) + ".")
 
-    success = roll()
 
-    another = True
-
-    while another:
-        anotherAnswer = input("Again?")
-
-        if anotherAnswer.lower() == "exit":
-            exit()
-        elif anotherAnswer.lower() == "true" or anotherAnswer.lower() == "yes" or anotherAnswer.lower() == "y":
-            another = True
-        else:
-            another = False
-
-        if another:
-            roll()
 
 def exit():
-    print ("Execution finished, press any key to exit.")
+    input("Execution finished, press any key to exit. ")
     sys.exit()
 
 
 def setup():
 
-    my_file = Path("C:\\Users\\matt-dev\\Documents\\GitHub\\Misc\\Python\\data.xml")
+    my_file = Path("C:\\Users\\matt-dev\\Documents\\GitHub\\Misc\\Python\\playerdata.xml")
 
     if my_file.is_file():
         return
@@ -48,21 +39,26 @@ def setup():
         root = ET.Element("root")
         tree = ET.ElementTree(root)
 
-        myself = ET.SubElement(root, "myself")
-        users = ET.SubElement(root, "users")
+        players = ET.SubElement(root, "players")
 
-        ET.SubElement(myself, "myname", name="AIv1").text = "AIv1"
+        ET.SubElement(players, "player", name="AI").text = "AI"
 
-        tree.write("data.xml")
+        tree.write("playerdata.xml")
 
 
-def getData(element, entity):
+def addPlayer(value):
 
-    tree = ET.parse("data.xml")
-    root = tree.getroot()
-    val = tree.find(entity + "/" + element)
-    return val.text
+    tree = ET.parse("playerdata.xml")
 
+    players = tree.find("players")
+
+    for p in players:
+        if p.text == value:
+            return False
+
+    newElement = ET.SubElement(players, "player", name=value).text = value
+    tree.write('playerdata.xml')
+    return True
 #---------------------
 
 #---------- Instance variable declarations
@@ -74,27 +70,37 @@ command = ""
 
 setup()
 
-print("Welcome.")
-name = input("What is your name?")
+print("Welcome to Poker Dice.")
+name = input("What is your name? ")
 
 if not name:
     name = "anonymous"
 
+if name.upper() == "AI":
+    print("You can't be called AI, that's my name!")
+    name = "anonymous"
+
 if name == "anonymous":
-    print("Well as you didn't tell me your name I'll just call you Bob. Ok, Bob?")
+    print("Well as you didn't tell me your name I'll just call you anon.")
+    print("By the way, did you know you're the most prolific poet in the history of mankind. Fun fact for you.")
 else:
+    name = name.title()
     print("Hello " + name)
+    result = addPlayer(name)
+    if not result:
+        print("Welcome back.")
+    else:
+        print("This is your first time, enjoy!")
 
-print("My name is " + getData("myname", "myself") + ".")
+#loop until user does not want to play anymore
+while command != "no":
 
-while command != "exit":
+    command = input("Shall we play Poker Dice? ").lower()
 
-    command = input("What would you like to do?").lower()
-
-    if command == "exit":
+    if command.lower() == "no":
         continue
-    elif command == "dice":
-        dice()
+    elif command.lower() == "yes":
+        pokerdice()
     else:
         print("Sorry I don't understand the command \"" + command + "\"")
 

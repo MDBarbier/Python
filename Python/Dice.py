@@ -13,17 +13,17 @@ def rolldie(varDiceType = "d6"):
     random.seed()
 
     #conditional based on supplied argument
-    if varDiceType == "d4":
+    if requestedDice == "d4":
         varRoll = random.randint(1,4)
-    elif varDiceType == "d6":
+    elif requestedDice == "d6":
         varRoll = random.randint(1,6)
-    elif varDiceType == "d8":
+    elif requestedDice == "d8":
         varRoll = random.randint(1,8)
-    elif varDiceType == "d12":
+    elif requestedDice == "d12":
         varRoll = random.randint(1,12)
-    elif varDiceType == "d20":
+    elif requestedDice == "d20":
         varRoll = random.randint(1,20)
-    elif varDiceType == "d100":
+    elif requestedDice == "d100":
         varRoll = random.randint(1,100)
     else:
         varRoll = "Unrecognized type"
