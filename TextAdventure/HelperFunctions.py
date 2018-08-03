@@ -49,19 +49,13 @@ def edit_config_key(key_name, key_value):
 
     with open('data/data.json') as data_file:
         data = json.load(data_file)
-    pprint(data)
 
     if data.get(key_name):
-        print("found key: " + key_name)
-        if data[key_name] == key_value:
-            print("no change")
-        else:
+        if data[key_name] != key_value:  # update value if changed
             data[key_name] = key_value
-            print("value updated")
     else:
-        print("No match for: " + key_name)
+        data[key_name] = key_value  # insert new key
 
-    print(data)
     file = open_config_file_write()
     json.dump(data, file)
     file.close()
