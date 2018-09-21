@@ -14,6 +14,19 @@ def add_game():
 
     return Game(name, genre)
 
+def create_profile(name):
+    create_profile = read_config_key("profile")
+    if not create_profile:
+        edit_config_key("profile", name)
+    else:
+        return create_profile
+
+def create_list(listname, list):
+    edit_config_key(listname, list)
+
+def get_profile():
+    get_profile = read_config_key("profile")
+    return get_profile
 
 def new_line(num_lines):
     one_to_ten = range(0, num_lines)
@@ -22,19 +35,19 @@ def new_line(num_lines):
 
 
 def open_data_file_read():
-    path = r'data.json'
+    path = r'data/data.json'
     file = open(path, 'r')
     return file
 
 
 def open_config_file_append():
-    path = r'data.json'
+    path = r'data/data.json'
     file = open(path, 'a')
     return file
 
 
 def open_config_file_write():
-    path = r'data.json'
+    path = r'data/data.json'
     file = open(path, 'w')
     return file
 
@@ -49,16 +62,16 @@ def read_config_key(key_name):
 def edit_config_key(key_name, key_value):
 
     with open('data/data.json') as data_file:
-        data = json.load(data_file)
+        data = json.load(data_file) #load the data file as json
 
     if data.get(key_name):
         if data[key_name] != key_value:  # update value if changed
             data[key_name] = key_value
     else:
-        data[key_name] = key_value  # insert new key
+        data[key_name] = key_value  # insert new key if the key does not exist
 
-    file = open_config_file_write()
-    json.dump(data, file)
+    file = open_config_file_write() # oper for writing
+    json.dump(data, file) # dump the entire json file back 
     file.close()
 
 class Game:
