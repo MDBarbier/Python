@@ -25,7 +25,7 @@ def roll_dice(varDiceType, numDice):
         elif varDiceType == "d100" or varDiceType == "D100":
             varRoll = random.randint(1,100)    
         else:
-            varRoll = 0
+            varRoll = -1
         
         results.append(varRoll)
             

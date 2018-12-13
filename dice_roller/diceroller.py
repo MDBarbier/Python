@@ -2,7 +2,10 @@
  
 import dice
 
+print('')
+print('')
 print('Welcome to the D&D DMs Dice Roller!')
+print('')
 
 continue_executing = True
 
@@ -15,30 +18,34 @@ while continue_executing is True:
         print('empty input detected')
         continue
 
-    dieTypeArray = list(dieType)
+    parts = dieType.split(' ')
 
-    # check whether the user has requested a specific number of dice
-    if str.isdigit(dieTypeArray[0]):
-
-        #is the next character a digit too?
-        if str.isdigit(dieTypeArray[1]):
-            dieNumber = dieTypeArray[0] + dieTypeArray[1]
-            dieType = dieTypeArray[3] + dieTypeArray[4]  
-        else: 
-            dieNumber = dieTypeArray[0]
-            dieType = dieTypeArray[2] + dieTypeArray[3]        
-
-
-    #check the dietype input and process 
+    
+    if len(parts) > 1:
+        dieType = parts[1]
+        dieNumber = parts[0]
+    else:
+        dieType = parts[0]    
+    
     if dieType == 'q' or dieType == 'Q':
         break
     else:        
         results = dice.roll_dice(dieType, int(dieNumber))
         total = 0
         
-        for x in results:
-            total = total + int(x)
-            print(dieType + ' rolled: ' + str(x))      
 
-        print('The total combined score is' + str(total))
+        print('')
+        for x in results:
+
+            if x == -1:
+                print('Invalid die type supplied!')
+                break
+            else:
+                total = total + int(x)
+                print(dieType + ' rolled: ' + str(x))      
+                
+        if total > 0:
+            print('')
+            print('The total combined score is: ' + str(total))
+            print('')
     
