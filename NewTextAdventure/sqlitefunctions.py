@@ -32,9 +32,29 @@ def InsertPlayer(player):
     sql = '''
             INSERT INTO player_data (name, shortname, password) 
             VALUES(?,?,?)'''
-    conn = CreateSqliteConnection('test.db')
-    cursor = conn.cursor()
-    cursor.execute(sql, player)
+    try:
+        conn = CreateSqliteConnection('test.db')
+        cursor = conn.cursor()
+        cursor.execute(sql, player)
+    except Exception as e:
+        print("Cannot create player: %s", e)
+    finally:
+        if conn:
+            conn.close()
+
     print("player created with id %s" % cursor.lastrowid)
     conn.commit()
     conn.close()
+
+def CheckCredentialsAgainstDatabase(usernameToCheck, passwordToCheck):
+    conn = None
+    sql = "SELECT * FROM player_data WHERE name = '{0}' AND password = '{1}'".format(usernameToCheck, passwordToCheck)
+    conn = CreateSqliteConnection('test.db')
+    cursor = conn.cursor()
+    cursor.execute(sql)
+    rows = cursor.fetchall()
+    theRow = rows[0]
+    if theRow[0] == usernameToCheck and theRow[2] == passwordToCheck:
+        return True
+    else:
+        return False
