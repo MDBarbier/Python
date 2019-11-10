@@ -12,7 +12,7 @@ records = cur.fetchall()
 print(records)
 
 # Make the changes to the database persistent
-conn.commit()
+#conn.commit()
 
 cur.close()
 conn.close()
