@@ -12,6 +12,7 @@ path = "D:\Github\Obsidian"
 # Method 4: Using os.path.join
 # path = os.path.join("D:", "Github", "Obsidian")
 
+
 # Example function to list contents of the directory
 def list_directory_contents(directory):
     try:
@@ -24,6 +25,7 @@ def list_directory_contents(directory):
         print(f"Permission denied to access the directory {directory}.")
     except Exception as e:
         print(f"An error occurred: {e}")
+
 
 # List contents of the specified path
 list_directory_contents(path)
